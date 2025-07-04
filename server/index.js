@@ -13,6 +13,7 @@ import notificationsRoutes from "./api/routes/notificationsRoutes.js";
 import productRoutes from "./api/routes/productRoutes.js";
 import categoryRoutes from "./api/routes/categoryRoutes.js";
 import labelRoutes from "./api/routes/labelRoutes.js";
+import cartRoutes from "./api/routes/cartRoutes.js";
 
 
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api/notifications", notificationsRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/labels", labelRoutes);
+app.use("/api/cart", cartRoutes);
 
 
 app.get("/", (req, res) => {
