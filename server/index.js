@@ -10,6 +10,10 @@ import morgan from "morgan";
 import entityRoutes from "./api/routes/entityRoutes.js";
 import uploadRoutes from "./api/routes/uploadRoutes.js";
 import notificationsRoutes from "./api/routes/notificationsRoutes.js";
+import productRoutes from "./api/routes/productRoutes.js";
+import categoryRoutes from "./api/routes/categoryRoutes.js";
+import labelRoutes from "./api/routes/labelRoutes.js";
+
 
 const app = express();
 const PORT = process.env.SERVER_PORT || 3000;
@@ -21,6 +25,10 @@ app.use(morgan("dev"));
 app.use("/api/entities", entityRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/notifications", notificationsRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/labels", labelRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("Server is running...");
