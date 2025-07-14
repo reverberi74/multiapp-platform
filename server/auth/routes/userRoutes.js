@@ -5,12 +5,12 @@ import { checkRole } from "../../middleware/checkRole.js";
 
 const router = express.Router();
 
-// Endpoint per aggiornare il ruolo
+// 🟢 Solo admin può aggiornare il ruolo di un utente
 router.put(
   "/:id/role",
-  authUser(),            // <-- ora la funzione è invocata
-  checkRole(["admin"]),  // <-- ruolo richiesto
-  updateUserRole
+  authUser(),            // Verifica autenticazione
+  checkRole(["admin"]),  // Verifica autorizzazione
+  updateUserRole         // Esegue aggiornamento
 );
 
 export default router;

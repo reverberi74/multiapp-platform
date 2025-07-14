@@ -7,14 +7,13 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "BusinessProfile",
     },
+    // Nome e cognome compilabili dopo
     first_name: {
       type: String,
-      required: true,
       trim: true,
     },
     last_name: {
       type: String,
-      required: true,
       trim: true,
     },
     email: {
@@ -27,7 +26,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6,
+      minlength: 8,
     },
     role: {
       type: String,
@@ -36,21 +35,25 @@ const userSchema = new Schema(
     },
     is_active: {
       type: Boolean,
-      default: true
+      default: true,
     },
-    // Profilo esteso (sarà completato dopo la registrazione)
+    email_verified: {
+      type: Boolean,
+      default: false,
+    },
+    // Recupero password (opzionale)
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+    // Profilo esteso
     phone: String,
     address: String,
     cap: String,
     city: String,
     province: String,
     dateBirth: Date,
-    codiceFiscale: String,
+    fiscalCode: String,
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
-export default User;
+export default model("User", userSchema);

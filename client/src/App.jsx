@@ -13,9 +13,9 @@ import Checkout from "./pages/public/Checkout";
 import Orders from "./pages/private/Orders";
 import Profile from "./pages/private/Profile";
 
-// Pagine auth
-import Login from "./pages/auth/Login";
-import Signup from "./pages/auth/Signup";
+
+import Login from "./pages/public/Login";
+import Signup from "./pages/public/Signup";
 
 const App = () => {
   const isAuthenticated = true; // ⚠️ In seguito sostituirai con Redux o context

@@ -6,6 +6,9 @@ import cartReducer from "./slice/cartSlice";
 import productsReducer from "./slice/productsSlice";
 import ordersReducer from "./slice/ordersSlice";
 import couponReducer from "./slice/couponSlice";
+import settingsSlice from "./slice/settingsSlice ";
+import authReducer from "./slice/authSlice"; // ✅ Importa lo slice dell'autenticazione
+
 import {
   FLUSH,
   REHYDRATE,
@@ -17,17 +20,20 @@ import {
 
 // Combina tutti gli slice
 const rootReducer = combineReducers({
+  auth: authReducer,     // ✅ Aggiunto auth
   cart: cartReducer,
   products: productsReducer,
   orders: ordersReducer,
   coupon: couponReducer,
+  settings: settingsSlice,
 });
 
 // Configura redux-persist
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["cart"], // ✅ Solo il carrello va salvato
+  whitelist: ["auth", "cart"], 
+  // ✅ Ora salviamo auth (token + user) e cart
 };
 
 // Crea il reducer persistente
@@ -47,5 +53,3 @@ export const store = configureStore({
 
 // Crea il persistor
 export const persistor = persistStore(store);
-
-

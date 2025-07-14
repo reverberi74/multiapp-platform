@@ -64,6 +64,12 @@ export const updateProduct = async (req, res) => {
   try {
     const { name, description, price, category, labels, stock, isActive } = req.body;
 
+    // Recupera il prodotto esistente
+    const existingProduct = await Product.findById(req.params.id);
+    if (!existingProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
     const updateData = {
       name,
       description,
@@ -74,22 +80,26 @@ export const updateProduct = async (req, res) => {
       isActive,
     };
 
-    // Se è stato caricato un file, aggiorna l'immagine
+    // Se è stato caricato un nuovo file
     if (req.file) {
+      // Elimina la vecchia immagine se esiste
+      if (existingProduct.image) {
+        const oldFilePath = path.join(process.cwd(), "/uploads/", existingProduct.image);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+      }
+      // Imposta la nuova immagine
       updateData.image = req.file.filename;
     }
 
-    const product = await Product.findByIdAndUpdate(
+    const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       updateData,
       { new: true }
     );
 
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    res.status(200).json(product);
+    res.status(200).json(updatedProduct);
   } catch (error) {
     console.error("Error updating product:", error);
     res.status(500).json({ message: "Server error" });

@@ -1,15 +1,15 @@
-// server/auth/routes/auth.js
 import express from "express";
-import login from "../controllers/loginController.js";
-import { createUser } from "../controllers/usersController.js";
+import { signup } from "../controllers/signupController.js";
+import login from "../../auth/controllers/loginController.js";
 
 const router = express.Router();
+
+// Registrazione (self-signup)
+router.post("/signup", signup);
 
 // Login
 router.post("/login", login);
 
-// Registrazione
-router.post("/register", createUser);
-
 export default router;
+
 

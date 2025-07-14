@@ -1,35 +1,45 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = {
-  products: [
-    {
-      id: "1",
-      name: "Smart TV Samsung",
-      price: 499,
-      image: "https://placehold.co/600x400"
-    },
-    {
-      id: "2",
-      name: "Notebook Lenovo",
-      price: 899,
-      image: "https://placehold.co/600x400"
-    },
-    {
-      id: "3",
-      name: "Smartphone Xiaomi",
-      price: 299,
-      image: "https://placehold.co/600x400"
+import axiosClient from "../../config/axiosClient"; // Usiamo axiosClient qui
+
+// Thunk asincrono per caricare prodotti
+export const fetchProducts = createAsyncThunk(
+  "products/fetchProducts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axiosClient.get("/products");
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Errore nel caricamento prodotti");
     }
-  ]
-};
-
-export const productsSlice = createSlice({
-  name: "products",
-  initialState,
-  reducers: {
-    // Qui aggiungerai reducer veri
   }
+);
+
+const productsSlice = createSlice({
+  name: "products",
+  initialState: {
+    products: [],
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    // Se vuoi in futuro aggiungere reducer sincroni (es. filtri)
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
 export default productsSlice.reducer;
-
